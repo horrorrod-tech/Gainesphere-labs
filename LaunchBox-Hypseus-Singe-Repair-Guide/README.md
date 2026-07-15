@@ -1,4 +1,6 @@
-# Hypseus Singe + LaunchBox (Windows)
+# Hypseus Singe + LaunchBox (Windows) — Repair & Setup Guide
+
+**This is a written guide and a couple of small reference scripts — not an app, not a program you run, and nothing here installs or configures anything automatically.** You'll still need LaunchBox and Hypseus Singe installed yourself; this just documents the specific steps and fixes for getting them to work together, and gives you a template file to copy and edit by hand.
 
 Get laserdisc and Singe-engine arcade games (Dragon's Lair-style FMV games, American Laser Games lightgun titles, etc.) running natively inside [LaunchBox](https://www.launchbox-app.com/) on Windows via [Hypseus Singe](https://github.com/DirtBagXon/hypseus-singe), the actively-maintained successor to Daphne.
 
