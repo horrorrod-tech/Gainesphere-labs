@@ -10,6 +10,8 @@ Get laserdisc and Singe-engine arcade games (Dragon's Lair-style FMV games, Amer
 
 This setup runs Hypseus Singe as just another platform inside LaunchBox on your existing Windows install — no reboot, no second OS, sits right next to your other emulators and games in the same frontend.
 
+**The actual hard part, either way, is folder structure and linking — not the emulator itself.** Batocera automates a lot of this, but even there it's easy to get lost on which folder structure or file layout a specific game expects, especially once you're adding 2-player titles or lightgun games (American Laser Games titles, `maddog2-hd`, etc.) that need extra files (dual-gun configs, crosshair assets) lined up correctly alongside the base game files. Doing it manually in LaunchBox on Windows means you're fully on the hook for getting that structure right yourself — which is exactly what the rest of this guide walks through.
+
 ## The method that actually works
 
 Don't bother creating a LaunchBox **Emulator** record for Hypseus Singe at all. It causes more problems than it solves, because Hypseus needs a `-homedir` starting point to resolve its own relative paths (`singe/`, `sound/`, `roms/`, etc.), and a frontend calling `hypseus.exe` directly doesn't give it one unless you pass `-homedir`/`-datadir` explicitly. Confirmed straight from the project's own maintainer ([DirtBagXon/hypseus-singe discussion #83](https://github.com/DirtBagXon/hypseus-singe/discussions/83)) and independently re-confirmed on the LaunchBox forums as recently as [February 2026](https://forums.launchbox-app.com/topic/93223-how-do-add-hypseus-singe-emulator-to-launchbox/): the reliable approach is a **per-game `.bat` file**, launched directly, with **no Emulator association at all**.
@@ -47,6 +49,12 @@ If you'd rather not curate individual games, the LaunchBox/Hypseus Singe communi
 ## `hypseus_game_audit.ps1`
 
 A small PowerShell script for anyone whose Hypseus Singe library grows over time: scans your `singe\` games folder and flags any game folder that doesn't have a matching launch script, so you catch a missing/renamed launcher before you're standing in front of the cabinet wondering why a game won't start. Usage and parameters are documented at the top of the script.
+
+**Read-only, and it does not check folder structure or lightgun/2-player setup** — see the next script for that.
+
+## `hypseus_lightgun_launch_check.ps1`
+
+A second, read-only script that goes after the two things that actually cause confusion when adding games by hand: (1) it flags any launcher `.bat` that's missing the `cd /d` line into the real Hypseus Singe folder — the root cause of the intermittent BigBox-hang issue above — and (2) it flags known lightgun titles (Mad Dog McCree/2, Crime Patrol, Who Shot Johnny Rock?, etc., plus anything you pass in yourself) that don't have a `dip_Crosshair` setting in their `.cfg` at all, so you know which games are worth a manual look if the crosshair doesn't show. It doesn't guess at which crosshair value is broken for a given game — that's still a "try 1–4" thing per the known-issues section above — it just tells you where to look. Usage and parameters documented at the top of the script.
 
 ## Sources
 
